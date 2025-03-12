@@ -1,10 +1,26 @@
-import { formatCurrency} from './money.js'
-import { getProducts} from './products.js'
+import { formatCurrency } from './money.js'
+import { getProducts } from './products.js'
 
-function generateProductHtml(products){
+function generateProductQtyOptions() {
+  let prodQtyHtml = '';
+  const maxQuantity = 10;
+  for (let i = 1; i <= maxQuantity; i++) {
+    if (i === 1) {
+      prodQtyHtml += `<option selected value="${i}">${i}</option>`;
+      continue;
+    }
+    
+    prodQtyHtml += `<option value="${i}">${i}</option>`;
+
+
+  }
+  return prodQtyHtml;
+}
+
+function generateProductHtml(products) {
   let productHtml = '';
 
-  products['products'].forEach(product => {
+  products.forEach(product => {
     productHtml += `
       <div class="product-container">
           <div class="product-image-container">
@@ -30,16 +46,7 @@ function generateProductHtml(products){
 
           <div class="product-quantity-container">
             <select>
-              <option selected value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
+              ${generateProductQtyOptions()}
             </select>
           </div>
 
