@@ -1,25 +1,13 @@
 import { cart } from "../data/cart.js";
-// import {  } from "../data/products.json";
 import { getProducts } from './products.js'
 import { formatCurrency } from './money.js'
 
 getProducts().then(products => checkout(products))
-
-function checkout(products) {
-    let matchingProduct;
-    let cartSummaryHtml = '';
-    // const prodMatch = products
-    // .filter(product =>  product.id === '58b4fc92-e98c-42aa-8c55-b6b79996769a') 
-    // .map(product => product);
-    // console.log(prodMatch)
+function generateCartSummaryHtml(matchingProducts){
+    let html = '';
     cart.forEach((cartItem, index) => {
-        console.log(index)
-        products.forEach(product => {
-            if (product.id === cartItem.productId) matchingProduct = product; 
-            
-        })
-
-        cartSummaryHtml+=`
+        const matchingProduct = matchingProducts[index]
+        html+=`
     
         <div class="cart-item-container">
         <div class="delivery-date">
@@ -91,8 +79,18 @@ function checkout(products) {
     </div>
     
     `;
+   
+
+        
     
     });
-    document.querySelector('.js-order-summary').innerHTML = cartSummaryHtml
-    // console.warn(cartSummaryHtml)
+    return html;
+
+}
+function checkout(products) {
+    const cartProductIds = cart.map(cartItem => cartItem.productId)
+    const matchingProducts = products.filter(product => cartProductIds.includes(product.id)).map(product => product);
+    document.querySelector('.js-order-summary').innerHTML = generateCartSummaryHtml(matchingProducts);
+    
+
 }
