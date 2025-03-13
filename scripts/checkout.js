@@ -1,4 +1,4 @@
-import { cart } from "../data/cart.js";
+import { cart, removeFromCart } from "../data/cart.js";
 import { getProducts } from './products.js'
 import { formatCurrency } from './money.js'
 
@@ -9,7 +9,8 @@ function generateCartSummaryHtml(matchingProducts) {
     cart.forEach((cartItem, index) => {
         const matchingProduct = matchingProducts[index]
         html+=`
-        <div class="cart-item-container">
+        <div class="cart-item-container 
+        js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
                 Delivery date: Tuesday, June 21
             </div>
@@ -30,7 +31,9 @@ function generateCartSummaryHtml(matchingProducts) {
                         <span class="update-quantity-link link-primary">
                             Update
                         </span>
-                        <span class="delete-quantity-link link-primary">
+                        <span class="delete-quantity-link link-primary js-delete-link"
+                        data-product-id="${matchingProduct.id}"
+                        >
                             Delete
                         </span>
                     </div>
@@ -84,5 +87,13 @@ function generateCartSummaryHtml(matchingProducts) {
 function checkout(products) {
     const cartProductIds = cart.map(cartItem => cartItem.productId);
     const matchingProducts = products.filter(product => cartProductIds.includes(product.id)).map(product => product);
-    document.querySelector('.js-order-summary').innerHTML = generateCartSummaryHtml(matchingProducts)
-}
+    document.querySelector('.js-order-summary').innerHTML = generateCartSummaryHtml(matchingProducts);
+    document.querySelectorAll('.js-delete-link').forEach(link => link.addEventListener('click', () => {
+        const productId = link.dataset.productId;
+        removeFromCart(productId);
+        const container = document.querySelector(`.js-cart-item-container-${productId}`)
+        container.remove();
+
+    }));
+    
+}   
