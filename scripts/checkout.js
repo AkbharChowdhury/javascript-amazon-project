@@ -8,12 +8,16 @@ getProducts().then(products => checkout(products));
 function generateCartSummaryHtml(matchingProducts) {
     let html = '';
     cart.forEach((cartItem, index) => {
-        const matchingProduct = matchingProducts[index]
+        const matchingProduct = matchingProducts[index];
+        const deliveryOptionId = cartItem.deliveryOptionId;
+        const deliveryDays = deliveryOptions.filter(option =>  option.id === deliveryOptionId).map(option => option.deliveryDays);
+        const deliveryDate = formatDeliveryDate(deliveryDays[0])
+
         html += `
         <div class="cart-item-container 
         js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
-                Delivery date: Tuesday, June 21
+                Delivery date: ${deliveryDate}
             </div>
             <div class="cart-item-details-grid">
                 <img class="product-image" src="${matchingProduct.image}" />
@@ -55,16 +59,19 @@ function generateCartSummaryHtml(matchingProducts) {
     return html;
 
 }
-
+function formatDeliveryDate(numDay){
+    const today = dayjs();
+    const deliveyrDate = today.add(numDay, 'days');
+    return deliveyrDate.format('dddd, MMMM, D');
+}
 function deliveryOptionsHtml(matchingProduct, cartItem) {
     let html = '';
 
-    const today = dayjs();
-    
  
     deliveryOptions.forEach(deliveryOption => {
-        const deliveyrDate = today.add(deliveryOption.deliveryDays, 'days');
-        const dateStr = deliveyrDate.format('dddd, MMMM, D');
+        // const deliveyrDate = today.add(deliveryOption.deliveryDays, 'days');
+        // const dateStr = deliveyrDate.format('dddd, MMMM, D');
+        const dateStr = formatDeliveryDate(deliveryOption.deliveryDays)
         const priceStr = deliveryOption.price === 0 ? 'FREE' : `${formatCurrency(deliveryOption.price)} - `;
         const isChecked = deliveryOption.id === cartItem.deliveryOptionId
         html+=`
