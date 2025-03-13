@@ -8,7 +8,6 @@ function generateCartSummaryHtml(matchingProducts){
     cart.forEach((cartItem, index) => {
         const matchingProduct = matchingProducts[index]
         html+=`
-    
         <div class="cart-item-container">
         <div class="delivery-date">
             Delivery date: Tuesday, June 21
@@ -78,11 +77,7 @@ function generateCartSummaryHtml(matchingProducts){
         </div>
     </div>
     
-    `;
-   
-
-        
-    
+    `; 
     });
     return html;
 
