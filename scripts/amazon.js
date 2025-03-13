@@ -57,7 +57,8 @@ function generateProductHtml(products) {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary js-add-to-cart">
+          <button class="add-to-cart-button button-primary js-add-to-cart"
+          data-product-name="${product.name}">
             Add to Cart
           </button>
         </div>`;
@@ -71,7 +72,8 @@ getProducts().then(products => {
   document.querySelector('.js-products-grid').innerHTML = generateProductHtml(products);
   document.querySelectorAll('.js-add-to-cart')
   .forEach(button => button.addEventListener('click', () => {
-      console.log('Added product')
+    
+      console.log(button.dataset)
     })
   )
 
