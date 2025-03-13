@@ -7,19 +7,19 @@ getProducts().then(products => checkout(products))
 
 function checkout(products) {
     let matchingProduct;
-    let html = '';
+    let cartSummaryHtml = '';
     // const prodMatch = products
     // .filter(product =>  product.id === '58b4fc92-e98c-42aa-8c55-b6b79996769a') 
     // .map(product => product);
     // console.log(prodMatch)
-    cart.forEach(cartItem => {
-        products.forEach(product =>{
+    cart.forEach((cartItem, index) => {
+        console.log(index)
+        products.forEach(product => {
             if (product.id === cartItem.productId) matchingProduct = product; 
             
         })
-        console.log({matchingProduct})
 
-        html+=`
+        cartSummaryHtml+=`
     
         <div class="cart-item-container">
         <div class="delivery-date">
@@ -38,7 +38,7 @@ function checkout(products) {
                 </div>
                 <div class="product-quantity">
                     <span>
-                    Quantity: <span class="quantity-label">2</span>
+                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                     </span>
                     <span class="update-quantity-link link-primary">
                     Update
@@ -93,5 +93,6 @@ function checkout(products) {
     `;
     
     });
-    console.log(html)
+    document.querySelector('.js-order-summary').innerHTML = cartSummaryHtml
+    // console.warn(cartSummaryHtml)
 }
