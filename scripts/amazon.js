@@ -76,7 +76,6 @@ getProducts().then(products => {
   document.querySelectorAll('.js-add-to-cart')
   .forEach(button => button.addEventListener('click', () => {
     const productId = button.dataset.productId;
-    // console.log(button.dataset.productId      )
     cart.forEach((item) =>{
       if(productId === item.productId){
         matchingItem = item;
@@ -96,12 +95,9 @@ getProducts().then(products => {
     }
    
 
-    const cartQuantity = cart.reduce((acc, item) => acc + item.quantity, 0)
-    console.log({cartQuantity})
+    const cartQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.querySelector('.js-cart-quantity').textContent = cartQuantity;
 
-
-    
-      console.log({cart})
      
     })
   )
