@@ -1,5 +1,6 @@
 import { formatCurrency } from './money.js'
 import { getProducts } from './products.js'
+import { cart } from '../data/cart.js'
 
 function generateProductQtyOptions() {
   let prodQtyHtml = '';
