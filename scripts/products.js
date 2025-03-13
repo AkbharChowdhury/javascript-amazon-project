@@ -1,8 +1,7 @@
 export async function getProducts() {
-  const url = 'data/products.json';
   try {
-    const response = await axios.get(url);
-    return response.data;
+    const response = await fetch('data/products.json');
+    return response.json();
   } catch (error) {
     console.error(error);
   }
