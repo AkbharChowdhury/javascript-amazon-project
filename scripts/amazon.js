@@ -1,6 +1,6 @@
-import { formatCurrency } from './money.js'
+import { formatCurrency } from './utils/money.js'
 import { getProducts } from './products.js'
-import { cart, addToCart } from '../data/cart.js'
+import { addToCart, getCartQuantity } from '../data/cart.js'
 
 function generateProductQtyOptions() {
   let prodQtyHtml = '';
@@ -71,12 +71,12 @@ function generateProductHtml(products) {
 
 
 function updateCartQuantity() {
-  const cartQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
-  document.querySelector('.js-cart-quantity').textContent = cartQuantity;
+  document.querySelector('.js-cart-quantity').textContent = getCartQuantity();
 
 }
 
 getProducts().then(products => {
+  updateCartQuantity();
   document.querySelector('.js-products-grid').innerHTML = generateProductHtml(products);
 
   document.querySelectorAll('.js-add-to-cart')
@@ -89,4 +89,6 @@ getProducts().then(products => {
     )
 
 })
+
+
 // 12:56

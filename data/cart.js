@@ -14,6 +14,8 @@ function getDefaultProduct() {
     ]
 }
 export let cart = JSON.parse(localStorage.getItem('cart')) ?? getDefaultProduct();
+export const getCartQuantity = () => cart.reduce((acc, item) => acc + item.quantity, 0)
+
 function saveToStorage() {
     localStorage.setItem('cart', JSON.stringify(cart))
 

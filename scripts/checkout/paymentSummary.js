@@ -1,5 +1,5 @@
 import { getProducts, getProduct } from './../products.js'
-import { cart } from "../../data/cart.js";
+import { cart, getCartQuantity } from "../../data/cart.js";
 import { formatCurrency } from '../utils/money.js';
 import { getDeliveryOption } from '../../data/deliveryOptions.js';
 
@@ -17,22 +17,34 @@ function renderPaymentSummary(products) {
     const vatAmount = 0.1;
     const vat = totalBeforeTax * vatAmount;
     const grandTotal = totalBeforeTax + vat;
+    const orderPaymentData = Object.freeze({
+        total,
+        totalShippingCost,
+        totalBeforeTax,
+        vat,
+        grandTotal
 
-    const html = paymentSummaryHtml(total,totalShippingCost, totalBeforeTax, vat, grandTotal);
+    })
+    console.log(orderPaymentData)
+    const html = paymentSummaryHtml(orderPaymentData);
     document.querySelector('.js-payment-summary').innerHTML = html;
  
 
 }
-function paymentSummaryHtml(total,totalShippingCost, totalBeforeTax,vat, grandTotal) {
+function paymentSummaryHtml(orderPaymentData) {
+    const totalProducts = getCartQuantity();
+
+    document.querySelector('.js-checkout-num-items').innerText = `${totalProducts} items`
+
     return`
      <div class="payment-summary-title">
             Order Summary
           </div>
 
           <div class="payment-summary-row">
-            <div>Items (3):</div>
+            <div>Items (${totalProducts}):</div>
             <div class="payment-summary-money">
-                ${formatCurrency(total)}
+                ${formatCurrency(orderPaymentData.total)}
             </div>
           </div>
 
@@ -40,8 +52,7 @@ function paymentSummaryHtml(total,totalShippingCost, totalBeforeTax,vat, grandTo
             <div>Shipping &amp; handling:</div>
             <div class="payment-summary-money">
             
-                ${formatCurrency(totalShippingCost)}
-
+                ${formatCurrency(orderPaymentData.totalShippingCost)}
 
             </div>
           </div>
@@ -50,19 +61,18 @@ function paymentSummaryHtml(total,totalShippingCost, totalBeforeTax,vat, grandTo
             <div>Total before tax:</div>
 
             <div class="payment-summary-money">
-                 ${formatCurrency(totalBeforeTax)}
-            
+                 ${formatCurrency(orderPaymentData.totalBeforeTax)}
             </div>
           </div>
 
           <div class="payment-summary-row">
             <div>Estimated tax (10%):</div>
-            <div class="payment-summary-money">  ${formatCurrency(vat)}</div>
+            <div class="payment-summary-money">  ${formatCurrency(orderPaymentData.vat)}</div>
           </div>
 
           <div class="payment-summary-row total-row">
             <div>Order total:</div>
-            <div class="payment-summary-money">${formatCurrency(grandTotal)}</div>
+            <div class="payment-summary-money">${formatCurrency(orderPaymentData.grandTotal)}</div>
           </div>
 
           <button class="place-order-button button-primary">
