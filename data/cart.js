@@ -55,7 +55,7 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
     cart.forEach(cartItem => {
         if (cartItem.productId === matchingItemObj['productId']) {
             cartItem.deliveryOptionId = matchingItemObj['deliveryOptionId']
-        }
+        } 
     });
 
     saveToStorage();

@@ -18,3 +18,7 @@ export const deliveryOptions = [{
 
 },
 ]
+export function getDeliveryOption(deliveryOptionId){
+    const deliveryOption = deliveryOptions.filter(option => option.id === deliveryOptionId)
+    return deliveryOption.length === 0 ? deliveryOptions[0] : deliveryOption[0];
+}

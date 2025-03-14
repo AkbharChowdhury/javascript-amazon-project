@@ -2,7 +2,7 @@ import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
 import { getProducts, getProduct } from './../products.js'
 import { formatCurrency } from '../utils/money.js'
 import { formatDeliveryDate } from '../utils/date.js'
-import { deliveryOptions } from '../../data/deliveryOptions.js'
+import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js'
 
 export const loadOrderSummary = () => getProducts().then(products => renderOrderSummary(products));
 
