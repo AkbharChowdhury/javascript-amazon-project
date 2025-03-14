@@ -85,7 +85,6 @@ getProducts().then(products => {
       const productId = button.dataset.productId;
       addToCart(productId);
       updateCartQuantity();
-      console.log(cart)
 
     })
     )

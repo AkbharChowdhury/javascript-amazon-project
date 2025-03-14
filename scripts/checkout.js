@@ -61,8 +61,8 @@ function generateCartSummaryHtml(matchingProducts) {
 }
 function formatDeliveryDate(numDay){
     const today = dayjs();
-    const deliveyrDate = today.add(numDay, 'days');
-    return deliveyrDate.format('dddd, MMMM, D');
+    return today.add(numDay, 'days').format('dddd, MMMM, D');
+    
 }
 function deliveryOptionsHtml(matchingProduct, cartItem) {
     let html = '';

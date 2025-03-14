@@ -13,10 +13,9 @@ function getDefaultProduct(){
     }
     ]
 }
-export let cart =  JSON.parse(localStorage.getItem('cart'))
-if(!cart) cart = getDefaultProduct()
+export let cart =  JSON.parse(localStorage.getItem('cart')) ?? getDefaultProduct();
 function saveToStorage() {
-    localStorage.setItem('cart',JSON.stringify(cart))
+    localStorage.setItem('cart', JSON.stringify(cart))
     
 }
 export function addToCart(productId) {
@@ -43,7 +42,7 @@ export function addToCart(productId) {
 }
 
 export function removeFromCart(productId) {
-    const newCart = cart.filter(cartItem => cartItem.productId !== productId).map(cartItem => cartItem);
+    const newCart = cart.filter(cartItem => cartItem.productId !== productId);
     cart = newCart;
     saveToStorage();
 
