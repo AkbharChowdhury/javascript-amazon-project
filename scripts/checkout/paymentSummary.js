@@ -5,18 +5,33 @@ import { formatCurrency } from '../utils/money.js';
 export const loadPaymentSummary = () => getProducts().then(products => renderPaymentSummary(products));
 
 function renderPaymentSummary(products) {
-        const product = getProduct(cart, products);
-        const productPrices = getProduct(cart, products).map(product => product.price);
-        console.log(productPrices)
+    const productPrices = getProduct(cart, products).map(product => product.price);
+    const cartSummary = getCartSummary(productPrices)
+    const total = cartSummary.reduce((acc, item) => acc + (item.quantity * item.price), 0);
+    console.log(formatCurrency(total))
 
-    
-      const total2 = cart.reduce((acc, item) => acc + (item.quantity * productPrices[0]), 0);
-    let total = 0;
-      cart.forEach((cartItem, i) => {
-        total+= product[i]['price'] * cartItem.quantity
-      });
-      console.log(formatCurrency(total))
-      console.log(formatCurrency(total2))
 
+}
+function getCartSummary(productPrices) {
+
+    // let cartSummary = [];
+    // cart.forEach((cartItem, i) => {
+        // cartSummary.push({
+        //     price: productPrices[i],
+        //     quantity: cartItem.quantity
+
+        // })
+    // });
+    // return cartSummary
+
+    return cart.map((cartItem, i) =>{
+        return {
+            price: productPrices[i],
+            quantity: cartItem.quantity
+
+        }
+
+        
+    })
     
 }
