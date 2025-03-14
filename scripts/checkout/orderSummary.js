@@ -1,9 +1,7 @@
 import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
-import { getProducts } from './../products.js'
+import { getProducts, getProduct } from './../products.js'
 import { formatCurrency } from '../utils/money.js'
-
 import { formatDeliveryDate } from '../utils/date.js'
-
 import { deliveryOptions } from '../../data/deliveryOptions.js'
 
 export const loadOrderSummary = () => getProducts().then(products => renderOrderSummary(products));
@@ -95,8 +93,7 @@ function renderDeliveryOptions(matchingProduct, cartItem) {
 
 }
 function renderOrderSummary(products) {
-    const cartProductIds = cart.map(cartItem => cartItem.productId);
-    const matchingProducts = products.filter(product => cartProductIds.includes(product.id)).map(product => product);
+    const matchingProducts = getProduct(cart, products)
     document.querySelector('.js-order-summary').innerHTML = renderCartSummary(matchingProducts);
     document.querySelectorAll('.js-delete-link').forEach(link => link.addEventListener('click', () => {
         const productId = link.dataset.productId;

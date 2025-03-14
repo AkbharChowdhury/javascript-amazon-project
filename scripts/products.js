@@ -6,3 +6,8 @@ export async function getProducts() {
     console.error(error);
   }
 }
+export function getProduct(cart, products){
+  const cartProductIds = cart.map(cartItem => cartItem.productId);
+  const matchingProducts = products.filter(product => cartProductIds.includes(product.id)).map(product => product);
+  return matchingProducts;
+}
