@@ -77,7 +77,6 @@ function updateCartQuantity() {
 }
 
 getProducts().then(products => {
-  console.log(typeof products)
   document.querySelector('.js-products-grid').innerHTML = generateProductHtml(products);
 
   document.querySelectorAll('.js-add-to-cart')

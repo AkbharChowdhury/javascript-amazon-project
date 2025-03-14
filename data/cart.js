@@ -47,3 +47,18 @@ export function removeFromCart(productId) {
     saveToStorage();
 
 }
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+    const matchingItem = cart.filter(cartItem => cartItem.productId === productId);
+    matchingItem[0]['deliveryOptionId'] = parseInt(deliveryOptionId);
+    cart.forEach(cartItem  => {
+        const matchingItemObj = matchingItem[0];
+        if (cartItem.productId === matchingItemObj['productId']) {
+            cartItem.deliveryOptionId = matchingItemObj['deliveryOptionId'] 
+        }
+    });
+
+    saveToStorage();
+
+
+}
