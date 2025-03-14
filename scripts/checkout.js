@@ -3,10 +3,9 @@ import { getProducts } from './products.js'
 import { formatCurrency } from './money.js'
 // import dayJs from "https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"
 import { deliveryOptions } from '../data/deliveryOptions.js'
-// note that actions must be executed in the checkout function
-getProducts().then(products => checkout(products));
+getProducts().then(products => renderOrderSummary(products));
 
-function generateCartSummaryHtml(matchingProducts) {
+function renderCartSummary(matchingProducts) {
     let html = '';
     cart.forEach((cartItem, index) => {
         const matchingProduct = matchingProducts[index];
@@ -48,7 +47,7 @@ function generateCartSummaryHtml(matchingProducts) {
                     <div class="delivery-options-title">
                         Choose a delivery option:
                     </div>
-                   ${deliveryOptionsHtml(matchingProduct, cartItem)}
+                   ${renderDeliveryOptions(matchingProduct, cartItem)}
                   
                   
                 </div>
@@ -65,7 +64,7 @@ function formatDeliveryDate(numDay){
     return today.add(numDay, 'days').format('dddd, MMMM, D');
     
 }
-function deliveryOptionsHtml(matchingProduct, cartItem) {
+function renderDeliveryOptions(matchingProduct, cartItem) {
     let html = '';
 
  
@@ -100,10 +99,10 @@ function deliveryOptionsHtml(matchingProduct, cartItem) {
 
 
 }
-function checkout(products) {
+function renderOrderSummary(products) {
     const cartProductIds = cart.map(cartItem => cartItem.productId);
     const matchingProducts = products.filter(product => cartProductIds.includes(product.id)).map(product => product);
-    document.querySelector('.js-order-summary').innerHTML = generateCartSummaryHtml(matchingProducts);
+    document.querySelector('.js-order-summary').innerHTML = renderCartSummary(matchingProducts);
     document.querySelectorAll('.js-delete-link').forEach(link => link.addEventListener('click', () => {
         const productId = link.dataset.productId;
         removeFromCart(productId);
@@ -114,12 +113,9 @@ function checkout(products) {
 
     document.querySelectorAll('.js-delivery-option').forEach(element => element.addEventListener('click', () =>{
         const {productId, deliveryOptionId} = element.dataset;
-        updateDeliveryOption(productId, deliveryOptionId)
-
-
-    
+        updateDeliveryOption(productId, deliveryOptionId);
+        getProducts().then(products => renderOrderSummary(products));
     }))
 
 }   
-// localStorage.clear()
 
