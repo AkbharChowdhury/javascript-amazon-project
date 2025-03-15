@@ -1,7 +1,7 @@
 import { formatCurrency } from './utils/money.js'
 import { getProducts } from './products.js'
-import { addToCart, getCartQuantity } from '../data/cart.js'
-
+import { Cart } from '../data/cart-class.js'
+const cart = new Cart('cart')
 function generateProductQtyOptions() {
   let prodQtyHtml = '';
   const maxQuantity = 10;
@@ -71,7 +71,7 @@ function generateProductHtml(products) {
 
 
 function updateCartQuantity() {
-  document.querySelector('.js-cart-quantity').textContent = getCartQuantity();
+  document.querySelector('.js-cart-quantity').textContent = cart.getCartQuantity();
 
 }
 
@@ -82,7 +82,7 @@ getProducts().then(products => {
   document.querySelectorAll('.js-add-to-cart')
     .forEach(button => button.addEventListener('click', () => {
       const productId = button.dataset.productId;
-      addToCart(productId);
+      cart.addToCart(productId);
       updateCartQuantity();
 
     })
