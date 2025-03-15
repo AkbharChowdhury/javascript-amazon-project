@@ -6,37 +6,41 @@ import { getDeliveryOption } from '../../data/deliveryOptions.js';
 export const loadPaymentSummary = () => getProducts().then(products => renderPaymentSummary(products));
 
 function renderPaymentSummary(products) {
-    const productPrices = getProduct(cart, products).map(product => product.price);
-    const cartSummary = getCartSummary(productPrices)
-    const total = cartSummary.reduce((acc, item) => acc + (item.quantity * item.price), 0);
 
+  const paymentSummaryHtml = getPaymentSummaryHtml(getOrderPaymentData(products));
+  document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHtml;
 
-    const shippingPrices = cart.map(cartItem => getDeliveryOption(cartItem.deliveryOptionId).price);
-    const totalShippingCost = shippingPrices.reduce((acc, item) => acc + item, 0);
-    const totalBeforeTax = total + totalShippingCost;
-    const vatAmount = 0.1;
-    const vat = totalBeforeTax * vatAmount;
-    const grandTotal = totalBeforeTax + vat;
-    const orderPaymentData = Object.freeze({
-        total,
-        totalShippingCost,
-        totalBeforeTax,
-        vat,
-        grandTotal
-
-    })
-    console.log(orderPaymentData)
-    const html = paymentSummaryHtml(orderPaymentData);
-    document.querySelector('.js-payment-summary').innerHTML = html;
- 
 
 }
-function paymentSummaryHtml(orderPaymentData) {
-    const totalProducts = getCartQuantity();
+function getOrderPaymentData(products) {
 
-    document.querySelector('.js-checkout-num-items').innerText = `${totalProducts} items`
+  const productPrices = getProduct(cart, products).map(product => product.price);
+  const cartSummary = getCartSummary(productPrices)
+  const total = cartSummary.reduce((acc, item) => acc + (item.quantity * item.price), 0);
 
-    return`
+  const shippingPrices = cart.map(cartItem => getDeliveryOption(cartItem.deliveryOptionId).price);
+  const totalShippingCost = shippingPrices.reduce((acc, item) => acc + item, 0);
+  const totalBeforeTax = total + totalShippingCost;
+  const vatAmount = 0.1;
+  const vat = totalBeforeTax * vatAmount;
+  const grandTotal = totalBeforeTax + vat;
+  return Object.freeze({
+    total,
+    totalShippingCost,
+    totalBeforeTax,
+    vat,
+    grandTotal
+
+  });
+
+
+}
+function getPaymentSummaryHtml(orderPaymentData) {
+  const totalProducts = getCartQuantity();
+
+  document.querySelector('.js-checkout-num-items').innerText = `${totalProducts} items`
+
+  return `
      <div class="payment-summary-title">
             Order Summary
           </div>
@@ -81,15 +85,15 @@ function paymentSummaryHtml(orderPaymentData) {
     
     
     `;
-    
-    
+
+
 }
 function getCartSummary(productPrices) {
-    return cart.map((cartItem, i) => {
-        return {
-            price: productPrices[i],
-            quantity: cartItem.quantity
-        }
-    })
+  return cart.map((cartItem, i) => {
+    return {
+      price: productPrices[i],
+      quantity: cartItem.quantity
+    }
+  })
 
 }

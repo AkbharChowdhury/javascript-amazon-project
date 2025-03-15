@@ -3,7 +3,7 @@ import { getProducts, getProduct } from './../products.js'
 import { formatCurrency } from '../utils/money.js'
 import { formatDeliveryDate } from '../utils/date.js'
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js'
-
+import {loadPaymentSummary} from './paymentSummary.js'
 export const loadOrderSummary = () => getProducts().then(products => renderOrderSummary(products));
 
 function renderCartSummary(matchingProducts) {
@@ -107,5 +107,6 @@ function renderOrderSummary(products) {
         const {productId, deliveryOptionId} = element.dataset;
         updateDeliveryOption(productId, parseInt(deliveryOptionId));
         loadOrderSummary();
+        loadPaymentSummary();
     }));
 }   
