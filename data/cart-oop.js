@@ -14,7 +14,6 @@ const myCart = {
         const newCart = this.cart.filter(cartItem => cartItem.productId !== productId);
         this.cart = newCart;
         saveToStorage();
-    
     },
 
     updateDeliveryOption(productId, deliveryOptionId) {
@@ -25,8 +24,8 @@ const myCart = {
             ...matchingItem,
             ...otherItems
         ];
+
         this.saveToStorage();
-    
     },
 
     addToCart(productId) {
@@ -64,9 +63,5 @@ const myCart = {
         }
         ]
     }
-
-
 }
-
-
 
