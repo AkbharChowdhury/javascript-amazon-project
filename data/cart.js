@@ -9,12 +9,12 @@ function getDefaultProduct() {
         productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
         quantity: 1,
         deliveryOptionId: 1
-
-
     }
     ]
 }
-export let cart = JSON.parse(localStorage.getItem(localStorageKey)) ?? getDefaultProduct();
+const loadFromStorage = () =>  JSON.parse(localStorage.getItem(localStorageKey)) ?? getDefaultProduct()
+
+export let cart = loadFromStorage();
 export const getCartQuantity = () => cart.reduce((acc, item) => acc + item.quantity, 0)
 
 function saveToStorage() {
@@ -40,7 +40,6 @@ export function addToCart(productId) {
     });
 
     saveToStorage();
-
 
 }
 
