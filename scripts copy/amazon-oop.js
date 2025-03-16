@@ -34,14 +34,14 @@ function generateProductHtml(products) {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="${product.getStarsUrl()}">
+              src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
             ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            ${product.getPrice()}
+            ${formatCurrency(product.price)}
           </div>
 
           <div class="product-quantity-container">
@@ -76,7 +76,6 @@ function updateCartQuantity() {
 }
 
 getProducts().then(products => {
-  console.warn(products)
   updateCartQuantity();
   document.querySelector('.js-products-grid').innerHTML = generateProductHtml(products);
 

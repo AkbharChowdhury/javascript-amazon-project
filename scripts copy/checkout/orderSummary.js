@@ -1,17 +1,14 @@
+import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
 import { getProducts, getProduct } from './../products.js'
 import { formatCurrency } from '../utils/money.js'
 import { formatDeliveryDate } from '../utils/date.js'
-import { deliveryOptions } from '../../data/deliveryOptions.js'
-import { Cart } from "../../data/cart-class.js";
-
+import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js'
 import {loadPaymentSummary} from './paymentSummary.js'
 export const loadOrderSummary = () => getProducts().then(products => renderOrderSummary(products));
 
-const cart = new Cart('cart')
-
 function renderCartSummary(matchingProducts) {
     let html = '';
-    cart.cart.forEach((cartItem, index) => {
+    cart.forEach((cartItem, index) => {
         const matchingProduct = matchingProducts[index];
         const deliveryOptionId = cartItem.deliveryOptionId;
         const deliveryDay = deliveryOptions.filter(option =>  option.id === deliveryOptionId).map(option => option.deliveryDays)[0];
@@ -30,7 +27,7 @@ function renderCartSummary(matchingProducts) {
                         ${matchingProduct.name}
                     </div>
                     <div class="product-price">
-                        ${matchingProduct.getPrice()}
+                        ${formatCurrency(matchingProduct.price)}
                     </div>
                     <div class="product-quantity">
                         <span>
@@ -96,11 +93,11 @@ function renderDeliveryOptions(matchingProduct, cartItem) {
 
 }
 function renderOrderSummary(products) {
-    const matchingProducts = getProduct(cart.cart, products)
+    const matchingProducts = getProduct(cart, products)
     document.querySelector('.js-order-summary').innerHTML = renderCartSummary(matchingProducts);
     document.querySelectorAll('.js-delete-link').forEach(link => link.addEventListener('click', () => {
         const productId = link.dataset.productId;
-        cart.removeFromCart(productId);
+        removeFromCart(productId);
         const container = document.querySelector(`.js-cart-item-container-${productId}`)
         container.remove();
 
@@ -108,9 +105,8 @@ function renderOrderSummary(products) {
 
     document.querySelectorAll('.js-delivery-option').forEach(element => element.addEventListener('click', () =>{
         const {productId, deliveryOptionId} = element.dataset;
-        cart.updateDeliveryOption(productId, parseInt(deliveryOptionId));
+        updateDeliveryOption(productId, parseInt(deliveryOptionId));
         loadOrderSummary();
         loadPaymentSummary();
-       
     }));
 }   

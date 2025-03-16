@@ -34,7 +34,7 @@ export class Cart {
         const matchingItem = this.cart.filter(cartItem => cartItem.productId === productId);
         const otherItems = this.cart.filter(cartItem => cartItem.productId !== productId);
         matchingItem[0].deliveryOptionId = deliveryOptionId;
-        this.cart = [
+        this.#cart = [
             ...matchingItem,
             ...otherItems
         ];

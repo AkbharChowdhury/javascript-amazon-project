@@ -1,7 +1,7 @@
 import { formatCurrency } from './utils/money.js'
 import { getProducts } from './products.js'
-import { Cart } from '../data/cart-class.js'
-const cart = new Cart('cart')
+import { addToCart, getCartQuantity } from '../data/cart.js'
+
 function generateProductQtyOptions() {
   let prodQtyHtml = '';
   const maxQuantity = 10;
@@ -34,14 +34,14 @@ function generateProductHtml(products) {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="${product.getStarsUrl()}">
+              src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
             ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            ${product.getPrice()}
+            ${formatCurrency(product.price)}
           </div>
 
           <div class="product-quantity-container">
@@ -71,19 +71,18 @@ function generateProductHtml(products) {
 
 
 function updateCartQuantity() {
-  document.querySelector('.js-cart-quantity').textContent = cart.getCartQuantity();
+  document.querySelector('.js-cart-quantity').textContent = getCartQuantity();
 
 }
 
 getProducts().then(products => {
-  console.warn(products)
   updateCartQuantity();
   document.querySelector('.js-products-grid').innerHTML = generateProductHtml(products);
 
   document.querySelectorAll('.js-add-to-cart')
     .forEach(button => button.addEventListener('click', () => {
       const productId = button.dataset.productId;
-      cart.addToCart(productId);
+      addToCart(productId);
       updateCartQuantity();
 
     })
