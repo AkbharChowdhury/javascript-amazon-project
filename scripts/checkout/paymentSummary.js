@@ -1,7 +1,9 @@
 import { getProducts, getProduct } from './../products.js'
 import { Cart } from "../../data/cart-class.js";
-import { formatCurrency } from '../utils/money.js';
+import { formatCurrency, percentageFormatter, getDecimalNumber } from '../utils/money.js';
 import { getDeliveryOption } from '../../data/deliveryOptions.js';
+
+const VAT_AMOUNT = 10;
 
 let cart = getCart();
 
@@ -29,8 +31,7 @@ function getOrderPaymentData(products) {
 
   const totalShippingCost = shippingPrices.reduce((acc, item) => acc + item, 0);
   const totalBeforeTax = total + totalShippingCost;
-  const vatAmount = 0.1;
-  const vat = totalBeforeTax * vatAmount;
+  const vat = totalBeforeTax * getDecimalNumber(VAT_AMOUNT);
   const grandTotal = totalBeforeTax + vat;
 
 
@@ -79,7 +80,7 @@ function getPaymentSummaryHtml(orderPaymentData) {
           </div>
 
           <div class="payment-summary-row">
-            <div>Estimated tax (10%):</div>
+            <div>Estimated tax (${percentageFormatter(VAT_AMOUNT)}):</div>
             <div class="payment-summary-money">  ${formatCurrency(orderPaymentData.vat)}</div>
           </div>
 
