@@ -49,6 +49,7 @@ function generateProductHtml(products) {
               ${generateProductQtyOptions()}
             </select>
           </div>
+          ${product.getExtraHtmlInfo()}
 
           <div class="product-spacer"></div>
 
